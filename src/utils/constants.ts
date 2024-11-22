@@ -1,7 +1,59 @@
+import {TextStyle} from 'react-native';
+
 const Colors = {
   primaryColor: '#0484fc',
   white: '#fff',
   black: '#000',
+  lightBlack: 'rgba(0,0,0,0.5)',
+  semiDarkBlack:"#000000A0",
 };
 
-export {Colors};
+const Fonts = {
+  poppinsMedium08: <TextStyle>{
+    fontFamily: 'Poppins-Medium',
+    fontSize: 8,
+  },
+  poppinsMedium16: <TextStyle>{
+    fontFamily: 'Poppins-Medium',
+    fontSize: 16,
+  },
+  poppinsMedium24: <TextStyle>{
+    fontFamily: 'Ubuntu-Medium',
+    fontSize: 24,
+  },
+  poppinsMedium32: <TextStyle>{
+    fontFamily: 'Poppins-Medium',
+    fontSize: 32,
+  },
+
+  poppinsRegular08: <TextStyle>{
+    fontFamily: 'Poppins-Regular',
+    fontSize: 8,
+  },
+  poppinsRegular16: <TextStyle>{
+    fontFamily: 'Poppins-Regular',
+    fontSize: 16,
+  },
+  poppinsRegular24: <TextStyle>{
+    fontFamily: 'Poppins-Regular',
+    fontSize: 24,
+  },
+  poppinsRegular32: <TextStyle>{
+    fontFamily: 'Poppins-Regular',
+    fontSize: 32,
+  },
+  poppinsBold16: <TextStyle>{
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
+  },
+  poppinsBold24: <TextStyle>{
+    fontFamily: 'Poppins-Bold',
+    fontSize: 24,
+  },
+  poppinsBold32: <TextStyle>{
+    fontFamily: 'Poppins-Bold',
+    fontSize: 32,
+  },
+};
+
+export {Colors, Fonts};
