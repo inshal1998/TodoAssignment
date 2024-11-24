@@ -20,6 +20,7 @@ export interface FetchedTodo {
 interface TodoState {
   userTodos: UserTodo[];
   fetchedTodos: FetchedTodo[];
+  selectedTodo:UserTodo | null;
   isLoading: boolean;
   error: string;
 }
@@ -29,6 +30,7 @@ const initialTodoState: TodoState = {
   fetchedTodos: [],
   isLoading: false,
   error: '',
+  selectedTodo:null
 };
 
 export const fetchTodos = createAsyncThunk('fetchedTodos', async () => {
@@ -67,6 +69,24 @@ const todoSlice = createSlice({
       });
     },
 
+    getSelectedTodo : (state , action:PayloadAction<{id:string}>) =>{
+      const selectedTodo = state.userTodos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      state.selectedTodo = selectedTodo || null
+    },
+
+    updateTodo: (state , action: PayloadAction<{todo:UserTodo}>) =>{
+      state.userTodos.find((todo)=>{
+        todo.completed=action.payload.todo.completed,
+        todo.id=action.payload.todo.id,
+        todo.createdAt=action.payload.todo.createdAt,
+        todo.title=action.payload.todo.title,
+        todo.description=action.payload.todo.description,
+        todo.completedDate=action.payload.todo.completedDate
+      })
+    },
+
     deleteTodo: (state, action: PayloadAction<{id: string}>) => {
       const selectedTodo = state.userTodos.findIndex(
         todo => todo.id === action.payload.id,
@@ -89,5 +109,5 @@ const todoSlice = createSlice({
   },
 });
 
-export const {addTodo, toggleCompleted, deleteTodo} = todoSlice.actions;
+export const {addTodo, toggleCompleted, deleteTodo, updateTodo ,getSelectedTodo} = todoSlice.actions;
 export default todoSlice.reducer;

@@ -1,13 +1,22 @@
-import * as React from 'react';
-import Svg, {SvgProps, Path} from 'react-native-svg';
+import * as React from "react";
+import Svg, { SvgProps, Path, Rect } from "react-native-svg";
+/* SVGR has dropped some elements not supported by react-native-svg: title */
 const EditIcon = (props: SvgProps) => (
   <Svg
     fill="#000000"
-    width="20px"
-    height="20px"
-    viewBox="0 0 24 24"
-    {...props}>
-    <Path d="M21,12a1,1,0,0,0-1,1v6a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4h6a1,1,0,0,0,0-2H5A3,3,0,0,0,2,5V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V13A1,1,0,0,0,21,12ZM6,12.76V17a1,1,0,0,0,1,1h4.24a1,1,0,0,0,.71-.29l6.92-6.93h0L21.71,8a1,1,0,0,0,0-1.42L17.47,2.29a1,1,0,0,0-1.42,0L13.23,5.12h0L6.29,12.05A1,1,0,0,0,6,12.76ZM16.76,4.41l2.83,2.83L18.17,8.66,15.34,5.83ZM8,13.17l5.93-5.93,2.83,2.83L10.83,16H8Z" />
+    width="15px"
+    height="15px"
+    viewBox="0 0 36 36"
+    preserveAspectRatio="xMidYMid meet"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <Path
+      className="clr-i-outline clr-i-outline-path-1"
+      d="M33.87,8.32,28,2.42a2.07,2.07,0,0,0-2.92,0L4.27,23.2l-1.9,8.2a2.06,2.06,0,0,0,2,2.5,2.14,2.14,0,0,0,.43,0L13.09,32,33.87,11.24A2.07,2.07,0,0,0,33.87,8.32ZM12.09,30.2,4.32,31.83l1.77-7.62L21.66,8.7l6,6ZM29,13.25l-6-6,3.48-3.46,5.9,6Z"
+    />
+    <Rect x={0} y={0} width={36} height={36} fillOpacity={0} />
   </Svg>
 );
 export default EditIcon;

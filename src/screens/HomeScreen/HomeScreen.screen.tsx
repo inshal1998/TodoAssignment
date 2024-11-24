@@ -1,52 +1,60 @@
-import {
-  Alert,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useHomeScreen} from './HomeScreen.hooks';
 import globalStyles from '../../utils/globalStyle';
 import {UserTodo} from '../../store/todo-slice';
-import {CustomCheckBox} from '../../components';
-import FloatingActionButton from '../../components/FloatingActionBtn';
-import CustomActivityIndicator from '../../components/CustomActivityLoader';
+import {CustomActivityLoader, FloatingActionBtn} from '../../components';
 import {DeleteIcon, EditIcon} from '../../assets';
+import {Colors} from '../../utils/constants';
+import {TodoDetails} from '..';
 
 const HomeScreen = () => {
-  const {handleToggle,removeTodo, navigateToAdd, todosToDisplay, isLoading} =
-    useHomeScreen();
+  const {
+    removeTodo,
+    navigateToAdd,
+    todosToDisplay,
+    isLoading,
+    toggleModal,
+    isModalVisible,
+  } = useHomeScreen();
 
   const renderItem = ({item, index}: {item: UserTodo; index: number}) => {
     let title =
-      item.title.length > 30
-        ? `${item.title.substring(0, 30)}...}`
-        : item.title;
+      item.title.length > 30 ? `${item.title.substring(0, 30)}...` : item.title;
     return (
       <View style={styles.flatListContainer}>
         <View>
-          <Text style={globalStyles.largeTxtBoldStyle}>{`${title}`}</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={[
+                globalStyles.largeTxtBoldStyle,
+                {
+                  color: item.completed
+                    ? Colors.medium_sea_green
+                    : Colors.black,
+                },
+              ]}>{`${title}`}</Text>
+            <TouchableOpacity onPress={toggleModal} style={{marginLeft: 15}}>
+              <EditIcon />
+            </TouchableOpacity>
+          </View>
           <Text>{item.createdAt}</Text>
         </View>
-        <TouchableOpacity>
-          <EditIcon/>
+        <TouchableOpacity onPress={() => removeTodo(item.id)}>
+          <DeleteIcon />
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>removeTodo(item.id)}>
-          <DeleteIcon/>
-        </TouchableOpacity>
-        {/* <CustomCheckBox
-          isChecked={item.completed}
-          onToggle={() => handleToggle(item.id)}
-        /> */}
+        <TodoDetails
+          isVisible={isModalVisible}
+          onClose={toggleModal}
+          listData={item}
+        />
       </View>
     );
   };
 
   return (
     <View style={globalStyles.flexOne}>
-      <CustomActivityIndicator visible={isLoading} />
+      <CustomActivityLoader visible={isLoading} />
       <FlatList
         data={todosToDisplay}
         renderItem={renderItem}
@@ -55,7 +63,7 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.verticalSpace} />}
       />
-      <FloatingActionButton onPress={() => navigateToAdd()} />
+      <FloatingActionBtn onPress={() => navigateToAdd()} />
     </View>
   );
 };

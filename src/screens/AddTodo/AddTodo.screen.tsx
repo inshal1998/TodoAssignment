@@ -8,7 +8,7 @@ const AddTodo = () => {
   const {settitle, title, description, setdescription, submitTodo, showErrors} =
     useAddTodoScreen();
   return (
-    <View style={[globalStyles.alignContentCenter , globalStyles.flexOne]}>
+    <View style={[globalStyles.alignContentCenter, globalStyles.flexOne]}>
       <CustomTextInput
         value={title}
         onChangeText={text => settitle(text)}

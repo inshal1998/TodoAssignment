@@ -1,12 +1,15 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../store/store';
 import {useEffect, useState} from 'react';
-import {fetchTodos, toggleCompleted , deleteTodo} from '../../store/todo-slice';
+import {fetchTodos, toggleCompleted, deleteTodo} from '../../store/todo-slice';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProps} from '../../navigation/navigation-types';
+import {Alert} from 'react-native';
 
 const useHomeScreen = () => {
   const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+
   const userTodos = useSelector(
     (state: RootState) => state.todoSlice.userTodos || [],
   );
@@ -34,9 +37,18 @@ const useHomeScreen = () => {
     navigation.navigate('AddTodoScreen');
   };
 
-  const removeTodo = (id:string) =>{
-    dispatch(deleteTodo({id}))
-  }
+  const removeTodo = (id: string) => {
+    Alert.alert('Delete Todo', 'Are you Sure You Want To Remove!!', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => dispatch(deleteTodo({id}))},
+    ]);
+  };
+
+  const toggleModal = () => setModalVisible(!isModalVisible);
 
   return {
     userTodos,
@@ -46,7 +58,9 @@ const useHomeScreen = () => {
     navigateToAdd,
     isLoading,
     setisLoading,
-    removeTodo
+    removeTodo,
+    isModalVisible,
+    toggleModal,
   };
 };
 export {useHomeScreen};
