@@ -16,7 +16,7 @@ import CustomActivityIndicator from '../../components/CustomActivityLoader';
 import {DeleteIcon, EditIcon} from '../../assets';
 
 const HomeScreen = () => {
-  const {handleToggle, navigateToAdd, todosToDisplay, isLoading} =
+  const {handleToggle,removeTodo, navigateToAdd, todosToDisplay, isLoading} =
     useHomeScreen();
 
   const renderItem = ({item, index}: {item: UserTodo; index: number}) => {
@@ -32,6 +32,8 @@ const HomeScreen = () => {
         </View>
         <TouchableOpacity>
           <EditIcon/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>removeTodo(item.id)}>
           <DeleteIcon/>
         </TouchableOpacity>
         {/* <CustomCheckBox

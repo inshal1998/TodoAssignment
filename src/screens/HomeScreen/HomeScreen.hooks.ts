@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../store/store';
 import {useEffect, useState} from 'react';
-import {fetchTodos, toggleCompleted} from '../../store/todo-slice';
+import {fetchTodos, toggleCompleted , deleteTodo} from '../../store/todo-slice';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProps} from '../../navigation/navigation-types';
 
@@ -34,6 +34,10 @@ const useHomeScreen = () => {
     navigation.navigate('AddTodoScreen');
   };
 
+  const removeTodo = (id:string) =>{
+    dispatch(deleteTodo({id}))
+  }
+
   return {
     userTodos,
     fetchedTodos,
@@ -42,6 +46,7 @@ const useHomeScreen = () => {
     navigateToAdd,
     isLoading,
     setisLoading,
+    removeTodo
   };
 };
 export {useHomeScreen};
