@@ -5,6 +5,11 @@ const globalStyles = StyleSheet.create({
   flexOne: {
     flex: 1,
     backgroundColor: Colors.white,
+    padding:20
+  },
+  alignContentCenter:{
+    justifyContent:'center',
+    alignItems:'center',
   },
   largeIconBtn: {
     width: Dimensions.get('screen').width / 1.3,
@@ -33,10 +38,16 @@ const globalStyles = StyleSheet.create({
   mediumTextStyle: {
     ...Fonts.poppinsRegular16,
     fontSize: 14,
-    color: Colors.lightBlack,
+    color: Colors.black,
   },
   largeTxtStyle: {
     ...Fonts.poppinsRegular16,
+    paddingTop: 4,
+    fontSize: 15,
+    color: Colors.semiDarkBlack,
+  },
+  largeTxtBoldStyle: {
+    ...Fonts.poppinsBold16,
     paddingTop: 4,
     fontSize: 15,
     color: Colors.semiDarkBlack,

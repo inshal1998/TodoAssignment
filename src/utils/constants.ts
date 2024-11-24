@@ -6,6 +6,15 @@ const Colors = {
   black: '#000',
   lightBlack: 'rgba(0,0,0,0.5)',
   semiDarkBlack:"#000000A0",
+  emerald_green:"#2ECC71",
+  medium_sea_green:"#4CAF50",
+  coral_red:'#FF6F61'
+};
+
+export const generateUniqueId = () => {
+  const timestampPart = Date.now() % 10000;
+  const randomPart = Math.floor(Math.random() * 100);
+  return `${timestampPart}${randomPart}`.padStart(4, '0');;
 };
 
 const Fonts = {

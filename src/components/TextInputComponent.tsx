@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TextInput, Text, StyleSheet, TextInputProps } from 'react-native';
+import { Colors, Fonts } from '../utils/constants';
 
 interface CustomTextInputProps extends TextInputProps {
   label?: string;
@@ -7,7 +8,7 @@ interface CustomTextInputProps extends TextInputProps {
   onChangeText: (text: string) => void;
   placeholder?: string;
   errorMessage?: string;
-  showError?: boolean; // Controls whether to show the error message
+  showError?: boolean;
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -42,28 +43,24 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
-  },
-  label: {
-    fontSize: 14,
-    marginBottom: 4,
-    color: '#333',
+    width:"100%",
   },
   input: {
     height: 48,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Colors.lightBlack,
     borderRadius: 8,
     paddingHorizontal: 12,
     fontSize: 16,
-    color: '#333',
-    backgroundColor: '#fff',
+    color: Colors.lightBlack,
+    backgroundColor: Colors.white,
   },
   inputError: {
-    borderColor: '#FF6F61', // Red for error state
+    borderColor: Colors.coral_red,
   },
   errorText: {
     marginTop: 4,
-    color: '#FF6F61',
+    color: Colors.coral_red,
     fontSize: 12,
   },
 });

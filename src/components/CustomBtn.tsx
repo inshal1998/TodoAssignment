@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Colors } from '../utils/constants';
 
 interface CustomButtonProps {
   title: string;
@@ -34,20 +35,21 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#4CAF50', // Green shade
+    backgroundColor: '#4CAF50',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
     alignItems: 'center',
+    width:"100%",
     justifyContent: 'center',
   },
   text: {
     fontSize: 16,
-    color: '#fff',
+    color: Colors.white,
     fontWeight: 'bold',
   },
   disabledButton: {
-    backgroundColor: '#9E9E9E', // Gray shade for disabled
+    backgroundColor: '#9E9E9E',
   },
 });
 

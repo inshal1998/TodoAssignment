@@ -10,7 +10,6 @@ import {RootStackParamList} from './navigation-types';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootStackNavigator = () => {
-
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{animation: 'slide_from_right'}}>

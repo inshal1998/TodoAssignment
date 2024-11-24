@@ -1,57 +1,66 @@
 import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {Alert} from 'react-native';
+import {DEFAULT_API_CONFIG} from '../utils/api-config';
+import { generateUniqueId } from '../utils/constants';
 
-export interface Todo {
+export interface UserTodo {
   id: string;
-  name: string;
-  frequency: string;
-  completeAt: string;
+  title: string;
+  completed: boolean;
+  description: string;
+  completedDate: string;
   createdAt: string;
-  isCompleted: boolean;
+}
+
+export interface FetchedTodo {
+  id: string;
+  title: string;
+  completed: boolean;
 }
 
 interface TodoState {
-  todo: Todo[];
+  userTodos: UserTodo[];
+  fetchedTodos: FetchedTodo[];
   isLoading: boolean;
   error: string;
 }
 
-const initialHabitState: TodoState = {
-  todo: [],
-  error: '',
+const initialTodoState: TodoState = {
+  userTodos: [],
+  fetchedTodos: [],
   isLoading: false,
+  error: '',
 };
 
-export const fetchItemById = createAsyncThunk('todo', () => {
-  return fetch('https://dummyjson.com/products').then(res =>
-    res.json().then(data => data),
-  );
+export const fetchTodos = createAsyncThunk('fetchedTodos', async () => {
+  const response = await fetch(DEFAULT_API_CONFIG.base_url);
+  const data: FetchedTodo[] = await response.json();
+  return data;
 });
 
 const todoSlice = createSlice({
   name: 'todo',
-  initialState: initialHabitState,
+  initialState: initialTodoState,
   reducers: {
     addTodo: (
       state,
-      action: PayloadAction<{name: string; frequency: string}>,
+      action: PayloadAction<{title: string; description: string}>,
     ) => {
-      const newHabit: Todo = {
-        name: action.payload.name,
-        frequency: action.payload.frequency,
-        id: Date.now().toString(),
-        completeAt: '',
-        createdAt: new Date().toISOString(),
-        isCompleted: false,
+      const userTodo: UserTodo = {
+        title: action.payload.title,
+        description: action.payload.description,
+        id: generateUniqueId(),
+        completed: false,
+        createdAt: new Date().toISOString().split('T')[0],
+        completedDate: '',
       };
-      state.todo.push(newHabit);
+      state.userTodos.push(userTodo);
     },
 
     toggleCompleted: (state, action: PayloadAction<{id: string}>) => {
-      state.todo.find(habit => {
-        if (habit.id === action.payload.id) {
-          habit.isCompleted = !habit.isCompleted;
-          habit.completeAt = habit.isCompleted
+      state.userTodos.find(todo => {
+        if (todo.id === action.payload.id) {
+          todo.completed = !todo.completed;
+          todo.completedDate = todo.completedDate
             ? new Date().toISOString().split('T')[0]
             : '';
         }
@@ -59,22 +68,22 @@ const todoSlice = createSlice({
     },
 
     deleteTodo: (state, action: PayloadAction<{id: string}>) => {
-      const selectedHabit = state.todo.findIndex(
-        habit => habit.id === action.payload.id,
+      const selectedTodo = state.userTodos.findIndex(
+        todo => todo.id === action.payload.id,
       );
-      state.todo.splice(selectedHabit, 1);
+      state.userTodos.splice(selectedTodo, 1);
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchItemById.pending, state => {
+      .addCase(fetchTodos.pending, state => {
         state.isLoading = true;
       })
-      .addCase(fetchItemById.fulfilled, (state, actions) => {
+      .addCase(fetchTodos.fulfilled, (state, actions) => {
         state.isLoading = false;
-        Alert.alert(JSON.stringify(actions.payload, undefined, 4));
+        state.fetchedTodos = actions.payload;
       })
-      .addCase(fetchItemById.rejected, (state, actions) => {
+      .addCase(fetchTodos.rejected, (state, actions) => {
         state.error = actions.error.message || 'Something Went Wrong';
       });
   },
