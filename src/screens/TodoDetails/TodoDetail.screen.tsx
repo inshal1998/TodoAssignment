@@ -9,16 +9,15 @@ import {
   ScrollView,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {UserTodo} from '../../store/todo-slice';
-import {CloseIcon} from '../../assets';
-import {Colors} from '../../utils/constants';
-import {CusomBtn, CustomCheckBox, TextInputComponent} from '../../components';
-import {useTodoDetail} from './TodoDetail.hooks';
+import { CloseIcon } from '../../assets';
+import { Colors } from '../../utils/constants';
+import { CusomBtn, CustomCheckBox, TextInputComponent } from '../../components';
+import { useTodoDetail } from './TodoDetail.hooks';
 
 interface CustomModalProps {
   isVisible: boolean;
   onClose: () => void;
-  listData: UserTodo;
+  listData: { id: string };
 }
 
 const TodoDetailScreen: React.FC<CustomModalProps> = ({
@@ -26,17 +25,23 @@ const TodoDetailScreen: React.FC<CustomModalProps> = ({
   onClose,
   listData,
 }) => {
-  const {todoDetail, updateDetail, updateField, errors ,markCompleted} =
-    useTodoDetail(listData.id);
-    
+  const {
+    localTodoDetail,
+    updateField,
+    updateDetail,
+    handleClose,
+    errors,
+    markCompleted,
+  } = useTodoDetail(listData.id);
+
   const handleUpdate = () => {
     updateDetail(onClose);
   };
-  
+
   return (
     <Modal
       isVisible={isVisible}
-      onBackdropPress={onClose}
+      onBackdropPress={() => handleClose(onClose)}
       animationIn="fadeInUp"
       animationOut="fadeOutDown"
       style={styles.modalContainer}>
@@ -45,34 +50,36 @@ const TodoDetailScreen: React.FC<CustomModalProps> = ({
         style={styles.keyboardAvoidingContainer}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.modalContent}>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <TouchableOpacity
+              onPress={() => handleClose(onClose)}
+              style={styles.closeButton}>
               <CloseIcon />
             </TouchableOpacity>
             <TextInputComponent
-              value={todoDetail.title}
-              onChangeText={value => updateField('title', value)}
-              editable={!todoDetail.completed}
+              value={localTodoDetail.title}
+              onChangeText={(value) => updateField('title', value)}
+              editable={!localTodoDetail.completed}
               placeholder="Enter title"
-              errorMessage={!todoDetail.title ? errors.title : ''}
+              errorMessage={errors.title}
               showError={errors.title !== ''}
             />
             <TextInputComponent
-              value={todoDetail.description}
-              onChangeText={value => updateField('description', value)}
-              editable={!todoDetail.completed}
+              value={localTodoDetail.description}
+              onChangeText={(value) => updateField('description', value)}
+              editable={!localTodoDetail.completed}
               placeholder="Enter description"
-              errorMessage={!todoDetail.description ? errors.description : ''}
+              errorMessage={errors.description}
               showError={errors.description !== ''}
             />
             <View style={styles.checkboxRow}>
               <CustomCheckBox
-                isChecked={todoDetail.completed}
-                onToggle={() => {
-                  markCompleted(listData.id)
-                  updateField('completed', !todoDetail.completed)}}
+                isChecked={localTodoDetail.completed}
+                onToggle={markCompleted}
               />
               <Text style={styles.dateText}>
-                {todoDetail.completed ? todoDetail.completedDate: todoDetail.createdAt}
+                {localTodoDetail.completed
+                  ? localTodoDetail.completedDate
+                  : localTodoDetail.createdAt}
               </Text>
             </View>
             <CusomBtn

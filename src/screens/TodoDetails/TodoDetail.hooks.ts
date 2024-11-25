@@ -5,20 +5,20 @@ import { useEffect, useState } from 'react';
 
 const useTodoDetail = (id: string) => {
   const initialTodo = useSelector(
-    (state: RootState) => state.todoSlice.userTodos.find(todo => todo.id === id) || {} as UserTodo
+    (state: RootState) =>
+      state.todoSlice.userTodos.find((todo) => todo.id === id) || ({} as UserTodo)
   );
 
-  const [todoDetail, setTodoDetail] = useState<UserTodo>(initialTodo);
+  const [localTodoDetail, setLocalTodoDetail] = useState<UserTodo>(initialTodo);
   const [errors, setErrors] = useState({ title: '', description: '' });
-
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    setTodoDetail(initialTodo);
+    setLocalTodoDetail(initialTodo);
   }, [initialTodo]);
 
   const updateField = (key: keyof UserTodo, value: string | boolean) => {
-    setTodoDetail((prev) => ({
+    setLocalTodoDetail((prev) => ({
       ...prev,
       [key]: value,
     }));
@@ -33,11 +33,11 @@ const useTodoDetail = (id: string) => {
       description: '',
     };
 
-    if (!todoDetail.title.trim()) {
+    if (!localTodoDetail.title.trim()) {
       newErrors.title = 'Title is required.';
     }
 
-    if (!todoDetail.description.trim()) {
+    if (!localTodoDetail.description.trim()) {
       newErrors.description = 'Description is required.';
     }
 
@@ -47,24 +47,33 @@ const useTodoDetail = (id: string) => {
 
   const updateDetail = (onSuccess?: () => void) => {
     if (validate()) {
-      dispatch(updateTodo({ todo: todoDetail }));
+      dispatch(updateTodo({ todo: localTodoDetail }));
       if (onSuccess) {
         onSuccess();
       }
     }
   };
 
-  const markCompleted = (id: string) => {
+  const handleClose = (onClose: () => void) => {
+    setLocalTodoDetail(initialTodo); 
+    onClose();
+  };
+
+  const markCompleted = () => {
     dispatch(toggleCompleted({ id }));
+    setLocalTodoDetail((prev) => ({
+      ...prev,
+      completed: !prev.completed,
+    }));
   };
 
   return {
-    todoDetail,
+    localTodoDetail,
     updateField,
     updateDetail,
+    handleClose,
     errors,
     markCompleted,
-    initialTodo,  // Include initialTodo so we can reset it when needed
   };
 };
 
