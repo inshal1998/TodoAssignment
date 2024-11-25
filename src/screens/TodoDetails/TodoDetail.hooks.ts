@@ -14,8 +14,10 @@ const useTodoDetail = (id: string) => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    setLocalTodoDetail(initialTodo);
-  }, [initialTodo]);
+    if (initialTodo.id !== localTodoDetail.id) {
+      setLocalTodoDetail(initialTodo);
+    }
+  }, [initialTodo, localTodoDetail.id]);
 
   const updateField = (key: keyof UserTodo, value: string | boolean) => {
     setLocalTodoDetail((prev) => ({
@@ -60,11 +62,13 @@ const useTodoDetail = (id: string) => {
   };
 
   const markCompleted = () => {
-    dispatch(toggleCompleted({ id }));
     setLocalTodoDetail((prev) => ({
       ...prev,
       completed: !prev.completed,
+      completedDate:new Date().toISOString().split('T')[0]
     }));
+    dispatch(updateTodo({todo:localTodoDetail}));
+    
   };
 
   return {

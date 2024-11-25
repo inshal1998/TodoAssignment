@@ -1,14 +1,18 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../store/store';
 import {useEffect, useState} from 'react';
-import {fetchTodos, toggleCompleted, deleteTodo} from '../../store/todo-slice';
+import {fetchTodos, toggleCompleted, deleteTodo, UserTodo} from '../../store/todo-slice';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProps} from '../../navigation/navigation-types';
 import {Alert} from 'react-native';
 
 const useHomeScreen = () => {
   const [isLoading, setisLoading] = useState<boolean>(false);
+  const [selectedTodo, setselectedTodo] = useState<UserTodo>();
   const [isModalVisible, setModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<'date' | 'name' | 'completed' | null>(null);
 
   const userTodos = useSelector(
     (state: RootState) => state.todoSlice.userTodos || [],
@@ -16,10 +20,14 @@ const useHomeScreen = () => {
   const fetchedTodos = useSelector(
     (state: RootState) => state.todoSlice.fetchedTodos || [],
   );
-  const todosToDisplay = userTodos.length > 0 ? userTodos : fetchedTodos;
+  let todosToDisplay:UserTodo[] = userTodos.length > 0 ? userTodos : fetchedTodos;
 
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<StackNavigationProps>();
+
+  const onSearch = (text:string) =>{
+
+  }
 
   useEffect(() => {
     setisLoading(true);
@@ -50,6 +58,11 @@ const useHomeScreen = () => {
 
   const toggleModal = () => setModalVisible(!isModalVisible);
 
+  const onSelectedItem = (item:UserTodo) =>{
+    setselectedTodo(item)
+    toggleModal()
+  }
+
   return {
     userTodos,
     fetchedTodos,
@@ -61,6 +74,13 @@ const useHomeScreen = () => {
     removeTodo,
     isModalVisible,
     toggleModal,
+    searchText,
+    onSearch,
+    setFilterModalVisible,
+    isFilterModalVisible,
+    onSelectedItem,
+    selectedTodo
+    
   };
 };
 export {useHomeScreen};

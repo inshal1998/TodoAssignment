@@ -16,9 +16,9 @@ const useAddTodoScreen = () => {
       setShowErrors(true);
     } else {
       setShowErrors(false);
+      dispatch(addTodo({title , description}))
       settitle('');
       setdescription('');
-      dispatch(addTodo({title , description}))
       navigation.goBack()
     }
   }

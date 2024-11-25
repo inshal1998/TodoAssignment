@@ -11,6 +11,7 @@ const AddTodo = () => {
     <View style={[globalStyles.alignContentCenter, globalStyles.flexOne]}>
       <CustomTextInput
         value={title}
+        containerStyle={{marginBottom:16}}
         onChangeText={text => settitle(text)}
         placeholder="Enter Title"
         errorMessage={!title ? 'Title is required' : ''}
@@ -18,6 +19,7 @@ const AddTodo = () => {
       />
       <CustomTextInput
         value={description}
+        containerStyle={{marginBottom:16}}
         onChangeText={text => setdescription(text)}
         placeholder="Enter Description"
         errorMessage={!description ? 'Description is required' : ''}

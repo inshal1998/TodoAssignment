@@ -1,6 +1,14 @@
 import React from 'react';
-import { View, TextInput, Text, StyleSheet, TextInputProps } from 'react-native';
-import { Colors, Fonts } from '../utils/constants';
+import {
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  TextInputProps,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
+import { Colors } from '../utils/constants';
 
 interface CustomTextInputProps extends TextInputProps {
   label?: string;
@@ -9,6 +17,11 @@ interface CustomTextInputProps extends TextInputProps {
   placeholder?: string;
   errorMessage?: string;
   showError?: boolean;
+  SvgIcon?: React.FC; 
+  onIconClick?: () => void; 
+  iconWidth?: number;
+  containerStyle?: ViewStyle,
+  inputContainerStyle?:ViewStyle
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -18,21 +31,37 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   placeholder,
   errorMessage,
   showError = false,
+  SvgIcon,
+  onIconClick,
+  iconWidth = 40,
+  containerStyle,
+  inputContainerStyle,
   ...rest
 }) => {
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={[
-          styles.input,
-          showError && errorMessage ? styles.inputError : null,
-        ]}
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor="#aaa"
-        {...rest}
-      />
+    <View style={[styles.container , containerStyle]}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={[
+            styles.input,
+            inputContainerStyle,
+            showError && errorMessage ? styles.inputError : null,
+          ]}
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          placeholderTextColor="#aaa"
+          {...rest}
+        />
+        {SvgIcon && (
+          <TouchableOpacity
+            onPress={onIconClick}
+            style={[styles.iconContainer, { width: iconWidth }]}
+          >
+            <SvgIcon />
+          </TouchableOpacity>
+        )}
+      </View>
       {showError && errorMessage && (
         <Text style={styles.errorText}>{errorMessage}</Text>
       )}
@@ -42,21 +71,29 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
-    width:"100%",
+    width: '100%',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 8,
+    backgroundColor: Colors.white,
   },
   input: {
+    flex: 1,
     height: 48,
-    borderWidth: 1,
-    borderColor: Colors.lightBlack,
-    borderRadius: 8,
     paddingHorizontal: 12,
     fontSize: 16,
+    borderRadius:10,
+    borderWidth:StyleSheet.hairlineWidth,
     color: Colors.lightBlack,
-    backgroundColor: Colors.white,
   },
   inputError: {
     borderColor: Colors.coral_red,
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   errorText: {
     marginTop: 4,

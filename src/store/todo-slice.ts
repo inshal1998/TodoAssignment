@@ -11,15 +11,9 @@ export interface UserTodo {
   createdAt: string;
 }
 
-export interface FetchedTodo {
-  id: string;
-  title: string;
-  completed: boolean;
-}
-
 interface TodoState {
   userTodos: UserTodo[];
-  fetchedTodos: FetchedTodo[];
+  fetchedTodos: UserTodo[];
   selectedTodo:UserTodo | null;
   isLoading: boolean;
   error: string;
@@ -35,8 +29,19 @@ const initialTodoState: TodoState = {
 
 export const fetchTodos = createAsyncThunk('fetchedTodos', async () => {
   const response = await fetch(DEFAULT_API_CONFIG.base_url);
-  const data: FetchedTodo[] = await response.json();
-  return data;
+  if (!response.ok) {
+    throw new Error('Failed to fetch todos');
+  }
+  const data = await response.json();
+
+  return data.map((item: UserTodo) => ({
+    id: generateUniqueId(),
+    title: item.title ?? 'Untitled',
+    description: item.description ?? '', 
+    completeDate: item.completedDate ?? '', 
+    createdAt: new Date().toISOString().split("T")[0], 
+    completed: false,
+  }));
 });
 
 const todoSlice = createSlice({
@@ -69,22 +74,21 @@ const todoSlice = createSlice({
       });
     },
 
-    getSelectedTodo : (state , action:PayloadAction<{id:string}>) =>{
+    getSelectedTodo: (state, action: PayloadAction<{id: string}>) => {
       const selectedTodo = state.userTodos.find(
-        (todo) => todo.id === action.payload.id
+        todo => todo.id === action.payload.id,
       );
-      state.selectedTodo = selectedTodo || null
+      state.selectedTodo = selectedTodo || null;
     },
 
-    updateTodo: (state , action: PayloadAction<{todo:UserTodo}>) =>{
-      state.userTodos.find((todo)=>{
-        todo.completed=action.payload.todo.completed,
-        todo.id=action.payload.todo.id,
-        todo.createdAt=action.payload.todo.createdAt,
-        todo.title=action.payload.todo.title,
-        todo.description=action.payload.todo.description,
-        todo.completedDate=action.payload.todo.completedDate
-      })
+    updateTodo: (state, action: PayloadAction<{todo: UserTodo}>) => {
+      const updatedTodo = action.payload.todo;
+      const todoIndex = state.userTodos.findIndex(
+        todo => todo.id === updatedTodo.id,
+      );
+      if (todoIndex !== -1) {
+        state.userTodos[todoIndex] = action.payload.todo;
+      }
     },
 
     deleteTodo: (state, action: PayloadAction<{id: string}>) => {

@@ -9,15 +9,16 @@ import {
   ScrollView,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { CloseIcon } from '../../assets';
-import { Colors } from '../../utils/constants';
-import { CusomBtn, CustomCheckBox, TextInputComponent } from '../../components';
-import { useTodoDetail } from './TodoDetail.hooks';
+import {CloseIcon} from '../../assets';
+import {Colors} from '../../utils/constants';
+import {CusomBtn, CustomCheckBox, TextInputComponent} from '../../components';
+import {useTodoDetail} from './TodoDetail.hooks';
+import globalStyles from '../../utils/globalStyle';
 
 interface CustomModalProps {
   isVisible: boolean;
   onClose: () => void;
-  listData: { id: string };
+  listData: {id: string};
 }
 
 const TodoDetailScreen: React.FC<CustomModalProps> = ({
@@ -50,14 +51,21 @@ const TodoDetailScreen: React.FC<CustomModalProps> = ({
         style={styles.keyboardAvoidingContainer}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.modalContent}>
-            <TouchableOpacity
-              onPress={() => handleClose(onClose)}
-              style={styles.closeButton}>
-              <CloseIcon />
-            </TouchableOpacity>
+            <View style={styles.headerContainer}>
+              <Text
+                style={[globalStyles.mediumTextStyle, styles.headerTxtStyle]}>
+                Update Todo Detail
+              </Text>
+              <TouchableOpacity
+                onPress={onClose}
+                style={[styles.closeButton, {justifyContent: 'flex-end'}]}>
+                <CloseIcon />
+              </TouchableOpacity>
+            </View>
             <TextInputComponent
               value={localTodoDetail.title}
-              onChangeText={(value) => updateField('title', value)}
+              inputContainerStyle={{marginBottom: 16}}
+              onChangeText={value => updateField('title', value)}
               editable={!localTodoDetail.completed}
               placeholder="Enter title"
               errorMessage={errors.title}
@@ -65,7 +73,8 @@ const TodoDetailScreen: React.FC<CustomModalProps> = ({
             />
             <TextInputComponent
               value={localTodoDetail.description}
-              onChangeText={(value) => updateField('description', value)}
+              inputContainerStyle={{marginBottom: 16}}
+              onChangeText={value => updateField('description', value)}
               editable={!localTodoDetail.completed}
               placeholder="Enter description"
               errorMessage={errors.description}
@@ -127,6 +136,16 @@ const styles = StyleSheet.create({
   },
   updateButton: {
     marginTop: 20,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  headerTxtStyle: {
+    marginLeft: '25%',
+    textAlign: 'center',
   },
 });
 
