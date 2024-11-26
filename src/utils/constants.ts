@@ -8,7 +8,8 @@ const Colors = {
   semiDarkBlack:"#000000A0",
   emerald_green:"#2ECC71",
   medium_sea_green:"#4CAF50",
-  coral_red:'#FF6F61'
+  coral_red:'#FF6F61',
+  gray_600:'#9E9E9E'
 };
 
 export const generateUniqueId = () => {
@@ -27,7 +28,7 @@ const Fonts = {
     fontSize: 16,
   },
   poppinsMedium24: <TextStyle>{
-    fontFamily: 'Ubuntu-Medium',
+    fontFamily: 'Poppins-Medium',
     fontSize: 24,
   },
   poppinsMedium32: <TextStyle>{

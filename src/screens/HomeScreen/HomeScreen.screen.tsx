@@ -70,9 +70,9 @@ const HomeScreen = () => {
             )}
           </View>
           <Text
-            style={{
+            style={[globalStyles.mediumTextStyle ,{
               color: isCompleted ? Colors.medium_sea_green : Colors.black,
-            }}>
+            }]}>
             {isCompleted ? item.completedDate : item.createdAt}
           </Text>
         </View>

@@ -9,6 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { Colors } from '../utils/constants';
+import globalStyles from '../utils/globalStyle';
 
 interface CustomTextInputProps extends TextInputProps {
   label?: string;
@@ -44,13 +45,14 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         <TextInput
           style={[
             styles.input,
+            globalStyles.mediumTextStyle,
             inputContainerStyle,
             showError && errorMessage ? styles.inputError : null,
           ]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          placeholderTextColor="#aaa"
+          placeholderTextColor={Colors.gray_600}
           {...rest}
         />
         {SvgIcon && (
@@ -63,7 +65,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         )}
       </View>
       {showError && errorMessage && (
-        <Text style={styles.errorText}>{errorMessage}</Text>
+        <Text style={[globalStyles.mediumTextStyle , styles.errorText]}>{errorMessage}</Text>
       )}
     </View>
   );
@@ -98,7 +100,6 @@ const styles = StyleSheet.create({
   errorText: {
     marginTop: 4,
     color: Colors.coral_red,
-    fontSize: 12,
   },
 });
 

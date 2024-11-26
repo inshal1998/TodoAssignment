@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { Colors } from '../utils/constants';
+import globalStyles from '../utils/globalStyle';
 
 interface CustomButtonProps {
   title: string;
@@ -28,14 +29,14 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       activeOpacity={0.8}
       disabled={disabled}
     >
-      <Text style={[styles.text, textStyle]}>{title}</Text>
+      <Text style={[globalStyles.largeTxtBoldStyle , styles.text, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: Colors.emerald_green,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -44,12 +45,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 16,
     color: Colors.white,
     fontWeight: 'bold',
   },
   disabledButton: {
-    backgroundColor: '#9E9E9E',
+    backgroundColor: Colors.gray_600,
   },
 });
 

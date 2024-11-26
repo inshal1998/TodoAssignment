@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import { Colors } from '../utils/constants';
+import globalStyles from '../utils/globalStyle';
 
 interface BottomModalProps {
   visible: boolean;
@@ -18,16 +19,16 @@ const BottomModal: React.FC<BottomModalProps> = ({ visible, onClose, onSelectFil
       style={styles.modalContainer}>
       <View style={styles.content}>
         <TouchableOpacity onPress={() => onSelectFilter('title')}>
-          <Text style={styles.filterOption}>Sort by Title</Text>
+          <Text style={[styles.filterOption , globalStyles.mediumTextStyle]}>Sort by Title</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => onSelectFilter('completed')}>
-          <Text style={styles.filterOption}>Sort by Completed</Text>
+          <Text style={[styles.filterOption , globalStyles.mediumTextStyle]}>Sort by Completed</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => onSelectFilter('latest')}>
-          <Text style={styles.filterOption}>Sort by Latest</Text>
+          <Text style={[styles.filterOption , globalStyles.mediumTextStyle]}>Sort by Latest</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-          <Text style={styles.closeText}>Close</Text>
+          <Text style={[globalStyles.largeTxtBoldStyle , styles.closeText]}>Close</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   filterOption: {
-    fontSize: 16,
     paddingVertical: 10,
     color: Colors.black,
   },

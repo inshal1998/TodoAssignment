@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, Modal } from 'react-native';
+import { Colors } from '../utils/constants';
 
 interface CustomActivityIndicatorProps {
   visible: boolean;
@@ -10,7 +11,7 @@ interface CustomActivityIndicatorProps {
 
 const CustomActivityIndicator: React.FC<CustomActivityIndicatorProps> = ({
   visible,
-  color = '#4CAF50',
+  color = Colors.emerald_green,
   size = 'large',
   backgroundColor = 'rgba(0, 0, 0, 0.5)', 
 }) => {

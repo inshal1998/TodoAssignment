@@ -85,7 +85,7 @@ const TodoDetailScreen: React.FC<CustomModalProps> = ({
                 isChecked={localTodoDetail.completed}
                 onToggle={markCompleted}
               />
-              <Text style={styles.dateText}>
+              <Text style={[styles.dateText, globalStyles.mediumTextStyle]}>
                 {localTodoDetail.completed
                   ? localTodoDetail.completedDate
                   : localTodoDetail.createdAt}
