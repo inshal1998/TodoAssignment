@@ -31,6 +31,7 @@ Follow the steps below to run the project on your local machine:
    npm install -g react-native-cli
 
 ### Clone the Repository
+   ```bash
 1. git clone https://github.com/your-repo/todo-app.git
 2. cd todo-app
 
