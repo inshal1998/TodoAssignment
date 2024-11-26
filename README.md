@@ -40,6 +40,9 @@ Follow the steps below to run the project on your local machine:
 ### Running the App
 1. npx react-native run-android
 
+## APK Link 
+1. https://drive.google.com/file/d/1MLC8IHXhviMZpUgv12csusX56_b2kElE/view?usp=sharing
+
 ## ScreenShot
 
 [WhatsApp Image 2024-11-26 at 12 18 22 PM](https://github.com/user-attachments/assets/09cbab9e-7c07-4706-97d2-6d4b8cee3d46)
