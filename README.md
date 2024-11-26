@@ -45,7 +45,7 @@ Follow the steps below to run the project on your local machine:
 
 ## ScreenShot
 
-[WhatsApp Image 2024-11-26 at 12 18 22 PM](https://github.com/user-attachments/assets/09cbab9e-7c07-4706-97d2-6d4b8cee3d46)
+! [WhatsApp Image 2024-11-26 at 12 18 22 PM](https://github.com/user-attachments/assets/09cbab9e-7c07-4706-97d2-6d4b8cee3d46)
 ![WhatsApp Image 2024-11-26 at 12 18 23 PM (1)](https://github.com/user-attachments/assets/cc033525-3793-4460-bbdc-9bddb4eecf6e)
 ![WhatsApp Image 2024-11-26 at 12 18 23 PM](https://github.com/user-attachments/assets/2940f14c-ee2f-4ccd-a2cb-a12515e25ca6)
 
