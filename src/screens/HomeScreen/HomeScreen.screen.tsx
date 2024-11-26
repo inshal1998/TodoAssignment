@@ -1,5 +1,4 @@
 import {
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -10,7 +9,11 @@ import React from 'react';
 import {useHomeScreen} from './HomeScreen.hooks';
 import globalStyles from '../../utils/globalStyle';
 import {UserTodo} from '../../store/todo-slice';
-import {CustomActivityLoader, FloatingActionBtn} from '../../components';
+import {
+  BottomModal,
+  CustomActivityLoader,
+  FloatingActionBtn,
+} from '../../components';
 import {DeleteIcon, EditIcon, FilterIcon} from '../../assets';
 import {Colors} from '../../utils/constants';
 import {TodoDetails} from '..';
@@ -21,7 +24,7 @@ const HomeScreen = () => {
     removeTodo,
     navigateToAdd,
     userTodos,
-    todosToDisplay,
+    todoToDisplay,
     isLoading,
     toggleModal,
     isModalVisible,
@@ -31,7 +34,15 @@ const HomeScreen = () => {
     onSearch,
     onSelectedItem,
     selectedTodo,
+    sortTodos,
   } = useHomeScreen();
+
+  const toggleFilterModal = () => setFilterModalVisible(!isFilterModalVisible);
+
+  const onSelectFilter = (filter: 'title' | 'completed' | 'latest') => {
+    sortTodos(filter);
+    toggleFilterModal();
+  };
 
   const renderItem = ({item, index}: {item: UserTodo; index: number}) => {
     let title =
@@ -83,9 +94,9 @@ const HomeScreen = () => {
         }}
         containerStyle={{marginVertical: 5, paddingHorizontal: 10}}
         onChangeText={text => onSearch(text)}
-        placeholder="Enter Todo"
+        placeholder="Search Todo"
         SvgIcon={FilterIcon}
-        onIconClick={() => Alert.alert('In Progress')}
+        onIconClick={toggleFilterModal}
       />
     </View>
   );
@@ -95,7 +106,7 @@ const HomeScreen = () => {
       <CustomActivityLoader visible={isLoading} />
       {HeaderComponent()}
       <FlatList
-        data={todosToDisplay}
+        data={todoToDisplay}
         renderItem={renderItem}
         removeClippedSubviews={true}
         style={{paddingHorizontal: 20, marginTop: 10}}
@@ -112,6 +123,11 @@ const HomeScreen = () => {
         />
       )}
       <FloatingActionBtn onPress={() => navigateToAdd()} />
+      <BottomModal
+        visible={isFilterModalVisible}
+        onClose={toggleFilterModal}
+        onSelectFilter={onSelectFilter}
+      />
     </View>
   );
 };

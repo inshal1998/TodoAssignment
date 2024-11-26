@@ -1,7 +1,12 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../store/store';
 import {useEffect, useState} from 'react';
-import {fetchTodos, toggleCompleted, deleteTodo, UserTodo} from '../../store/todo-slice';
+import {
+  fetchTodos,
+  toggleCompleted,
+  deleteTodo,
+  UserTodo,
+} from '../../store/todo-slice';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProps} from '../../navigation/navigation-types';
 import {Alert} from 'react-native';
@@ -12,22 +17,48 @@ const useHomeScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState<'date' | 'name' | 'completed' | null>(null);
-
+  const [selectedFilter, setSelectedFilter] = useState<
+    'latest' | 'title' | 'completed' | null
+  >(null);
+  const [todoToDisplay, settodoToDisplay] = useState<UserTodo[]>([]);
   const userTodos = useSelector(
     (state: RootState) => state.todoSlice.userTodos || [],
   );
   const fetchedTodos = useSelector(
     (state: RootState) => state.todoSlice.fetchedTodos || [],
   );
-  let todosToDisplay:UserTodo[] = userTodos.length > 0 ? userTodos : fetchedTodos;
 
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<StackNavigationProps>();
 
-  const onSearch = (text:string) =>{
+  const onSearch = (text: string) => {
+    setSearchText(text);
+    const filteredTodos = (
+      userTodos.length > 0 ? userTodos : fetchedTodos
+    ).filter(todo => todo.title.toLowerCase().includes(text.toLowerCase()));
+    settodoToDisplay(filteredTodos);
+  };
 
-  }
+  const sortTodos = (filter: 'title' | 'completed' | 'latest') => {
+    let sortedTodos = [...todoToDisplay];
+    if (filter === 'title') {
+      sortedTodos.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (filter === 'completed') {
+      sortedTodos.sort((a, b) => Number(b.completed) - Number(a.completed));
+    } else if (filter === 'latest') {
+      sortedTodos.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
+    }
+    settodoToDisplay(sortedTodos);
+    setSelectedFilter(filter);
+  };
+
+  useEffect(() => {
+    const initialTodos = userTodos.length > 0 ? userTodos : fetchedTodos;
+    settodoToDisplay(initialTodos);
+  }, [userTodos, fetchedTodos]);
 
   useEffect(() => {
     setisLoading(true);
@@ -58,15 +89,15 @@ const useHomeScreen = () => {
 
   const toggleModal = () => setModalVisible(!isModalVisible);
 
-  const onSelectedItem = (item:UserTodo) =>{
-    setselectedTodo(item)
-    toggleModal()
-  }
+  const onSelectedItem = (item: UserTodo) => {
+    setselectedTodo(item);
+    toggleModal();
+  };
 
   return {
     userTodos,
     fetchedTodos,
-    todosToDisplay,
+    todoToDisplay,
     handleToggle,
     navigateToAdd,
     isLoading,
@@ -79,8 +110,8 @@ const useHomeScreen = () => {
     setFilterModalVisible,
     isFilterModalVisible,
     onSelectedItem,
-    selectedTodo
-    
+    selectedTodo,
+    sortTodos,
   };
 };
 export {useHomeScreen};
